@@ -1,0 +1,286 @@
+2.1
+列表、字符串和可变性
+与 string、float 和 int 一样，list 也是一种类型。在我们看到的所有类型中，列表最像字符串：两种类型都支持索引、切片、len 函数和 in 运算符
+
+>>> sample_string = "And Now For Something Completely Different"
+>>> sample_list = ['Graham', 'John', 'Terry', 'Eric', 'Terry', 'Michael']
+>>> sample_string[4]
+'N'
+>>> sample_list[4]
+'Terry'
+>>> sample_string[12:21]
+'Something'
+>>> sample_list[2:4]
+['Terry', 'Eric']
+>>> len(sample_string)
+42
+>>> len(sample_list)
+6
+>>> 'thing' in sample_string
+True
+>>> 'Rowan' in sample_list
+False
+
+
+那么列表与字符串有什么不同？明显的区别是字符串是字母序列，而列表元素可以是任何类型的对象。更细微的区别是列表可以被修改，但字符串不能
+
+
+包含可变和不可变对象的变量运行方式非常不同，甚至有时候令人惊讶！ 体验，使用打印语句，并仔细检查自己的工作，以确保程序正确跟踪其数据。
+
+
+
+以下是可与列表一起使用的函数：
+len（some_list）
+返回 some_list 中的元素个数
+
+max(some_list)
+返回列表中的最大元素。最大元素的确定取决于列表中的对象类型。数字列表中的最大元素是最大的数字：
+
+字符串列表的最大元素是按字母顺序排列的最后一个元素：
+
+>>> python_varieties = ['Burmese Python', 'African Rock Python', 'Ball Python', 'Reticulated Python', 'Angolan Python']
+>>> max(python_varieties)
+'Reticulated Python'
+
+这是因为 max 函数采用 > 定义，大于比较运算符。> 运算符在许多非数字类型中都有被定义；如果正在处理的对象可以用 > 比较，那么可以在对象列表中使用 max。对于字符串来说，标准比较是按字母顺序，因此该列表的最大值就是按字母顺序显示的最后一个元素。
+
+max 函数不适用于包含不同且不可比较类型元素的列表：
+
+>>> max([42, 'African Swallow'])
+TypeError: unorderable types: str() > int()
+这是因为 max 函数采用 > 定义，如果无法比较列表中的两个对象，则无法确定最大元素。
+
+
+min(some_list)
+返回列表中的最小元素。 min 与 max 相反。
+
+sorted（some_list）
+按从小到大的顺序返回 some_list 的副本，同时保持 some_list 不变。可以通过添加可选参数 reverse = True 按从大到小的顺序排序。
+
+>>> sorted(batch_sizes)
+[6, 15, 34, 35, 65, 89]
+>>> sorted(batch_sizes, reverse=True)
+[89, 65, 35, 34, 15, 6]
+>>> print(batch_sizes)
+[15, 6, 89, 34, 65, 35]
+
+
+
+连接列表
+我们来介绍一个新的字符串方法，join：
+
+>>> nautical_directions = "\n".join(["fore", "aft", "starboard", "port"])
+>>> print(nautical_directions)
+fore
+aft
+starboard
+port
+join 将一个列表作为参数，返回一个由分隔符字符串连接列表元素组成的字符串。在这个示例中，我们使用字符串 \n 作为分隔符，以便使每个元素之间有一个换行符。
+
+
+我们也可以和 .join 配合使用其他字符串（而不是 '\n'）。例如：
+
+>>> names = ["García", "O'Kelly", "Davis"]
+>>> "-".join(names)
+"García-O'Kelly-Davis"
+注意，务必用逗号 (,) 隔开连接列表中的每个元素。如果忘记隔开，就不会触发错误，但也会导致意想不到的结果。下面的例子中，"García” 和 "O'Kelly” 之间没有逗号，所以出现了以下结果：
+
+>>> names = ["García" "O'Kelly", "Davis"]
+>>> "-".join(names)
+"GarcíaO'Kelly-Davis"
+你有没有注意到 "García" 和 "O'Kelly" 之间的 '-' 分隔符消失了，作为替代，又添加了两个字符串？这是因为 Python 的默认字符串的字面追加。如果 .join 返回与预期不同的结果，那么最好检查是否丢失逗号。
+
+还要注意，如果尝试加入字符串以外的其他任何内容，join 会触发错误。例如：
+
+>>> stuff = ["thing", 42, "nope"]
+>>> " and ".join(stuff)
+Traceback (most recent call last):
+  File "<stdin>", line 1, in <module>
+TypeError: sequence item 1: expected str instance, int found
+追加到列表
+列表对象的 append 方法在列表末尾添加一个元素。
+
+>>> python_varieties.append('Blood Python')
+>>> print(python_varieties)
+['Burmese Python', 'African Rock Python', 'Ball Python', 'Reticulated Python', 'Angolan Python', 'Blood Python']
+
+
+
+
+
+
+
+
+2.2
+使用循环构建列表
+我们迄今为止编写的循环均从列表中提取信息。还可以使用 for 循环创建和修改列表。以我们以前的小写字母名单列表为例，
+
+names = ['charlotte hippopotamus turner', 'oliver st. john-mollusc',
+         'nigel incubator-jones', 'philip diplodocus mallory']
+我们可能想生成一个新的大写字母名单。以下是使用循环生成名单的方法：
+
+# create a new list of capitalized names without modifying the original list
+capitalized_names = [] #create a new, empty list
+for name in names:
+    capitalized_names.append(name.title()) #add elements to the new list
+如果不想保留小写字母的列表，可以将其覆盖，而不是创建一个新列表。
+
+# modify the names list in place
+for index in range(len(names)): # iterate over the index numbers of the names list
+    names[index] = names[index].title() # modify each element of names
+如需创建一个新列表，可以从一个空列表 ([]) 开始，然后使用 append 方法添加新元素。修改列表更复杂一些，需要使用一个新的函数：range。range 函数需要一个参数，一个整数 n，并返回一个从零到 n-1 的数字序列。
+
+>>> for number in range(4):
+>>>     print(number)
+0
+1
+2
+3
+使用 range 函数为名单列表中的每个值生成索引。这样我们可以使用 names[index] 访问列表的元素，以便更新 names 列表中的值。
+
+
+练习：创建 HTML 列表
+编写 html_list 函数。该函数需要一个参数，一个字符串列表，并返回一个 HTML 列表的单个字符串。
+例如，如果为函数提供列表 ['first string', 'second string']，则该函数可产生以下字符串。
+
+<ul>
+<li>first string</li>
+<li>second string</li>
+</ul>
+也就是说，字符串的第一行应该是开始标签 <ul>。
+继第一行之后是源列表中的每个元素（各占一行），
+由 <li> 和 </li> 标签包围。字符串的最后一行应该是结束标签 </ul>。
+
+
+ans:运用了" ".format()
+
+def html_list(list_items):
+    HTML_string = "<ul>\n"
+    for item in list_items:
+        HTML_string += "<li>{}</li>\n".format(item)
+    HTML_string += "</ul>"
+    return HTML_string
+    
+    
+    
+   
+   
+2.3
+pop用法：a.pop()将移除list中最后一个元素
+list.pop([i])，将移除指定元素
+
+card_deck = [4, 11, 8, 5, 13, 2, 8, 10]
+hand = []
+
+while sum(hand) <= 17:
+    hand.append(card_deck.pop())
+
+print(hand)
+
+
+
+
+
+break 停止
+For 循环迭代序列中的每个元素，while 循环在满足条件时停止迭代。这对于大多数情况是足够的，但我们有时候需要更精确地控制循环何时结束。在这些情况下，需使用 break 关键字。
+
+循环在遇到 break 语句时立即停止。如果检测到已经满足某些条件，可以使用这些条件来结束循环。for 和 while 循环都可以使用break 关键字。
+
+我们将在下面的示例中看到如何使用 break。假设你想按照一个货物列表来装载货船。每个货物重量一定，但货船具有最大载重限制。理想情况是想装载所有货物，但不希望货船超载。因此，当达到货船的额定载重时，应停止装载。所以我们将使用一个 for 循环，装载每个货物并跟踪到目前为止装载的所有货物的重量。一旦达到货船的载重，应使用 break 语句停止装载。
+
+注意：此示例中的 manifest 是一个列表的列表。我们以前接触过列表，也知道有些列表元素本身就是列表，manifest 变量就是这种情况。manifest 列表中的每个元素本身就是一个列表，它包含两个元素：一种货物和货物重量。
+
+# each item in the manifest is an item and its weight
+manifest = [["bananas", 15], ["mattresses", 34], ["dog kennels",42], ["machine that goes ping!", 120], ["tea chests", 10], ["cheeses", 0]]
+
+cargo_weight = 0
+cargo_hold = []
+
+for cargo in manifest:
+    if cargo_weight >= 100:
+        break
+    else:
+        cargo_hold.append(cargo[0])
+        cargo_weight += cargo[1]
+代码旨在阻止船上货物的重量超过规定的限值 100。我们来检查一下装在船上的货物。
+
+>>> print(cargo_weight)
+211
+>>> print(cargo_hold)
+['bananas', 'mattresses', 'dog kennels', 'machine that goes ping!']
+嗯，这不对 - 货船严重超过了重量限制。break 语句阻止了我们将每一件货物都放在船上，但仍然超过了限制。
+
+很难看出出了什么问题。我们可以使用的一个策略是在代码中调用 print。这是一个非常方便的方法，因为随着代码的逐步运行，它可以让我们深入了解数据状态。如果打印的提示正确（并给出上下文），这可能有助于我们找到错误。
+
+以下添加了调试语句的循环。
+
+cargo_weight = 0
+cargo_hold = []
+
+for cargo in manifest:
+    print("debug: the weight is currently: {}".format(cargo_weight))
+    if cargo_weight >= 100:
+        print("debug: breaking loop now!")
+        break
+    else:
+        print("debug: adding item: {}".format(cargo[0]))
+        print("debug: with weight: {}".format(cargo[1]))
+        cargo_hold.append(cargo[0])
+        cargo_weight += cargo[1]
+以下是带标注循环的输出：
+
+debug: the weight is currently: 0
+debug: adding item: bananas
+debug: with weight: 15
+debug: the weight is currently: 15
+debug: adding item: mattresses
+debug: with weight: 34
+debug: the weight is currently: 49
+debug: adding item: dog kennels
+debug: with weight: 42
+debug: the weight is currently: 91
+debug: adding item: machine that goes ping!
+debug: with weight: 120
+debug: the weight is currently: 211
+debug: breaking loop now!
+
+
+
+
+练习：断开字符串
+大家现在使用 break 语句编写自己的循环。你们的任务是创建一个长度为 140 个字符的字符串 news_ticker。可通过从 headlines 列表添加标题，在每个标题之间插入一个空格来创建新闻提醒。如有必要，可以从中间截断最后一个标题，这样 news_ticker 的长度刚好就是 140 个字符。
+
+记住 break 均可用于 for 和 while 循环。使用你认为最适合的循环。也可以考虑在代码中添加 print 语句来帮助你解决错误。
+
+
+headlines = ["Local Bear Eaten by Man",
+             "Legislature Announces New Laws",
+             "Peasant Discovers Violence Inherent in System",
+             "Cat Rescues Fireman Stuck in Tree",
+             "Brave Knight Runs Away",
+             "Papperbok Review: Totally Triffic"]
+
+news_ticker = ""
+num=0
+
+# TODO: set news_ticker to a string that contains no more than 140 characters long.
+# HINT: modify the headlines list to verify your loop works with different inputs
+for var in headlines:
+    news_ticker += var + " "
+    if len(news_ticker)>=140:
+        news_ticker= news_ticker[:140]
+        break
+        
+  #看看人家多简单，你写的那简直没法让人看
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
