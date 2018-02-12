@@ -1,0 +1,125 @@
+删除列表中的重复项
+假设你在运行一个热门搜索引擎，并且为了了解用户是从哪里浏览，
+你已经对他们进行了调查。你已经收到了 785 个回复，并将这些回复编制成了一个国家列表：
+
+>>> len(countries)
+785
+>>> countries[:5]
+['Angola', 'Maldives', 'India', 'United States', 'India']
+世界上没有 785 个国家，这说明 countries 列表中可能有重复的条目。
+对列表进行切片，查看前几个元素证明了这一点。删除重复项，生成一个用户所浏览的全部国家/地区的列表将比较有用。
+
+def remove_duplicates(list):
+    
+    target=[]
+    
+    for var in list:
+        
+        if var not in target:
+            target.append(var)
+    return target
+        
+        
+集合
+可以使用 for 循环从列表中删除重复项，但是还有一种替代技术。Python 用于存储集合的数据结构除了列表之外还有几个，其中一个非常适合存储唯一的元素：集合。
+
+集合是唯一元素的集合，没有任何特定的排序。我们可以从这样的列表中创建一个集合：
+
+>>> country_ set = set(countries)
+>>> len(country_set)
+196
+
+集合与列表一样支持 in 运算符：
+>>> 'Mauritius' in countries
+True
+>>> 'Mauritius' in country_set
+True
+
+可以添加元素到集合，但列表不同，不使用 append 方法，而是 add 方法：
+country_set.add("Florin")
+
+集合也有一个与列表一样的 pop 方法。
+从集合 pop 一个元素时，一个随机元素被删除
+（记住，集合不同于列表，是无序的，所以没有 "最后一个元素"。
+
+可以使用与迭代列表一样的方法通过 for 循环迭代集合。
+
+
+
+
+字典
+集合是简单的数据结构，具有一个主要用途：收集唯一的元素。我们要学习的下一个数据结构是字典，
+这个数据结构更灵活。字典不像列表和集合存储单个对象，而是存储元素对：键（Key） 和 值（Value）。
+我们在该示例中定义了一个字典，其中键是元素名称，值是它们对应的原子序数。
+
+elements = {'hydrogen': 1, 'helium': 2, 'carbon': 6}
+可以用方括号括住键来查找字典中的值：
+
+>>> print(elements['carbon'])
+6
+也可以使用方括号将新值插入字典：
+
+>>> elements['lithium'] = 3
+>>> print(elements['lithium'])
+3
+字典键与列表索引类似：我们可以通过将索引 / 键放入方括号，从数据结构中选择元素。
+与列表不同，字典可以具有任何不可变类型的键，而不仅仅是整数。elements 字典使用字符串作为键。但是不必使每个键都具有相同的类型！
+
+
+
+
+
+如果集合中可能没有键，在查找之前可以使用 in 验证字典中是否存在这个键。
+
+字典还有一个有用的相关方法，即 get。get 用于在字典中查找值，但不同于方括号，如果不存在这个键，get 返回 None (或选择的默认值)。如果预料查找可能会失败，则相对于普通方括号来说，get 可能是一个更好的工具。
+
+>>> elements.get('dilithium')
+None
+>>> elements['dilithium']
+KeyError: 'dilithium'
+>>> elements.get('kryptonite', 'There\'s no such element!')
+"There's no such element!"
+在最后一个示例中，当未找到键时，我们指定返回一个默认值 (string 'There\'s no such element!')，而不是 None。
+
+
+
+
+
+
+编写一个函数 most_prolific，其将采用与上述 Beatles_Discography 示例相同的字典格式，
+并返回发布最多专辑的年份。如果在 Beatles_Discography 中调用该函数，
+那么应返回 1964 年，这一年相对于其他年份发行的唱片数量较多一些。
+
+如果多个年份的最大发行量相同，则该函数将返回一个年份列表。
+
+
+
+
+def most_prolific(discs): 
+#We will store a dictionary of years 
+#and number of albums per year     
+    years = {} 
+    maxyears = [] 
+    maxnumber = 0 
+    for disc in discs: 
+        year = discs[disc]
+        if year in years: 
+            years[year] += 1 
+        else: 
+            years[year] = 1 
+
+#find the year in which the maximum 
+#number of albums was published 
+#there are more elegant ways of accomplishing this, 
+#but the code below works 
+    for year in years:
+        if years[year] > maxnumber: 
+            maxyears=[] 
+            maxyears.append(year) 
+            maxnumber = years[year] 
+        elif years[year] == maxnumber and not (year in maxyears): 
+            maxyears.append(year) 
+    if (len(maxyears) == 1): 
+        return maxyears[0] 
+    else: 
+        return maxyears
