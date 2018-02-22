@@ -1,0 +1,56 @@
+
+与大多数语言相比，Python 具有大型标准库。事实上，人们说 Python “自带电池”，这么说的原因是因为 Python 带有适当开展工作所需的库。但是，标准库并不具有你想要的一切，标准库不支持某些太专业化的任务。但好在独立开发人员编写了成千上万个第三方库。你可以浏览 PyPi 排名中最受欢迎的第三方库列表。
+
+如果 Python 本身不包含这些包，那该如何获取呢？我们可以使用 pip 来安装库，Python 3 自带的一个包管理器。Python 2 用户也使用 pip，但是 Python 2 没有自带，所以必须单独安装。如果同时安装了 Python 2 和 Python 3，每个都具有 pip，可以使用命令 pip2 和 pip3 来进行区分。
+
+pip 是 Python 的标准包管理器，但不是唯一管理器。一个常见选择是专门为数据科学家和类似用户设计的 Anaconda。我们将讲解 pip，因为其属于一般标准。
+
+使用 pip 安装包
+让我们使用 pip 来安装 pytz 库。为了确保我们使用的是与 Python 3 安装相关的 pip，我们将使用命令 pip3。pytz 是一个与时区相关的库，时区处理是一个非常复杂的任务。
+
+我们可以使用 pip3 命令行安装 pytz：
+
+$ pip3 install pytz
+该命令将下载并安装 pytz，以便于我们将其导入程序。安装完成后，我们可以使用与从标准库导入相同的语法导入第三方包。我在这个示例中从标准库导入 pytz 和 datetime。标准的做法是将导入第三方库的语句，放在导入标准库的语句后面。
+
+from datetime import datetime
+
+import pytz
+
+utc = pytz.utc # utc is Coordinated Universal Time
+ist = pytz.timezone('Asia/Kolkata') #IST is Indian Standard Time
+
+now = datetime.datetime.now(tz=utc) # this is the current time in UTC
+ist_now = now.astimezone(ist) # this is the current time in IST.
+该示例以 协调世界时（Coordinated Universal Time） 表达方式在变量 now 中存储当前时间。然后将此时间转换为 印度标准时间（Indian Standard Time），并将其存储在变量 ist_now 中。
+
+有用的第三方包
+掌握安装和导入第三方库的技能很有用，但要成为一名高效的程序员，还需要知道哪些库可供自己使用。人们通常会通过网上推荐或同事推荐口头相传来了解有用的新库。如果你是一位新的 Python 程序员，可能还未认识太多同事，所以从这里开启自己的程序员生涯，这是 Udacity 中很受工程师欢迎的包列表。
+
+IPython - 一个更好的交互式 Python 解释器
+requests - 提供制作 Web 请求的简单方法，用于访问 Web API。
+Flask - 用于制作 Web 应用程序和 API 的轻量级框架。
+Django - 制作 Web 应用程序的特色框架。Django 特别适用于设计复杂、内容繁重的 Web 应用程序。
+Beautiful Soup - 用于解析 HTML 并从中提取信息。尤其适用于网络抓取。
+pytest - 扩展 Python 的内置断言（assertion）和 unittest 模块。
+PyYAML - 用于阅读和编写 YAML 文件。
+NumPy - 使用 Python 进行科学计算的基础包，除了其他功能之外，其还包含强大的 N 维数组对象和有用的线性代数功能。
+pandas - 一个包含高表现力、数据结构和数据分析工具的库。尤其是：pandas 提供了 DataFrame 数据结构！
+matplotlib - 一个 2D 绘图库，用于在交互式环境中生成各种硬拷贝格式的出版物质量图。
+ggplot - 另一个 2D 绘图库，基于 R 的 ggplot2 库。
+Pillow - Python 影像库使你的 Python 解释器新增图像处理功能。
+pyglet - 用于游戏开发的跨平台应用程序框架。
+Pygame - 用于编写游戏的 Python 模块集合。
+pytz - Python 中的世界时区定义
+requirements.txt
+较大的 Python 程序可能依赖几十个第三方包。为了更容易共享这些程序，程序员通常会在一个名为 requirements.txt 的文件中列出项目的依赖项。这是一个 requirements.txt 文件的示例：
+
+beautifulsoup4==4.5.1
+bs4==0.0.1
+pytz==2016.7
+requests==2.11.1
+文件的每一行都包含一个包的名称及其版本号。版本号在技术上是可选的，但通常应该包含在内。库可能在版本之间略有改变（或大幅改变），因此使用程序员编写程序时所使用的相同库版本非常重要。
+
+大家可以使用 pip，通过以下命令一次安装项目的所有依赖项：
+
+$ pip3 install -r requirements.txt
